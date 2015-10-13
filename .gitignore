@@ -1,0 +1,27 @@
+target
+logs
+
+# eclipse
+.classpath
+.project
+.settings
+
+# idea
+.idea
+*.iml
+*.ipr
+*.iws
+
+# maven
+*.versionsBackup
+
+# OS X
+.DS_Store
+
+# log
+*.log
+log.*
+log
+kaopu-service/all-in-one/log
+
+*.pyc

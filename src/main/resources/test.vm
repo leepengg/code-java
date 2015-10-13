@@ -1,0 +1,5 @@
+#if($test.contains("http"))
+hello
+#else
+world
+#end
