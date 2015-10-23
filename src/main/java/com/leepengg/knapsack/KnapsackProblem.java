@@ -1,4 +1,4 @@
-package com.leepengg;
+package com.leepengg.knapsack;
 
 import java.util.ArrayList;
 
@@ -82,7 +82,7 @@ public class KnapsackProblem {
     /**
      * 前n 个背包，总承重为 totalWeight 的最优值矩阵
      */
-    private int[][] bestValues;
+    private int[] bestValues;
 
     /**
      * 前 n 个背包，总承重为 totalWeight 的最优值
@@ -100,7 +100,7 @@ public class KnapsackProblem {
         this.totalWeight = totalWeight;
         this.n = n;
         if (bestValues == null) {
-            bestValues = new int[n + 1][totalWeight + 1];
+            bestValues = new int[totalWeight + 1];
         }
         if (bestSolution == null)
             bestSolution = new ArrayList();
@@ -117,38 +117,27 @@ public class KnapsackProblem {
         }
         System.out.println("给定总承重: " + totalWeight);
 
-        // 求解最优值
-        for (int j = 0; j <= totalWeight; j++) {
-            for (int i = 0; i <= n; i++) {
 
-                if (i == 0 || j == 0) {
-                    bestValues[i][j] = 0;
-                } else {
-                    // 如果第i个背包重量大于总承重，则最优解存在于前i-1个背包中，
-                    // 注意：第 i 个背包是 bags[i-1]
-                    if (j < bags[i - 1].getWeight()) {
-                        bestValues[i][j] = bestValues[i - 1][j];
-                    } else {
-                        // 如果第 i 个背包不大于总承重，则最优解要么是包含第 i 个背包的最优解，
-                        // 要么是不包含第 i 个背包的最优解， 取两者最大值，这里采用了分类讨论法
-                        // 第 i 个背包的重量 iweight 和价值 ivalue
-                        int iweight = bags[i - 1].getWeight();
-                        int ivalue = bags[i - 1].getValue();
-                        bestValues[i][j] =
-                                Math.max(bestValues[i - 1][j], ivalue + bestValues[i - 1][j - iweight]);
-                    } // else
-                } //else
-            } //for
-        } //for
+        for (int i = 0; i <= n; ++i) {
+            //if(i>0)   scanf("%d %d", &V, &W);
+            for (int j = totalWeight; j >= 0; --j) {
+                int iweight = bags[i - 1].getWeight();
+                int ivalue = bags[i - 1].getValue();
+                if (j >= ivalue && i > 0) bestValues[j] = bestValues[j - ivalue] + iweight;
+            }
+        }
+
 
         // 求解背包组成
+        /*
         int tempWeight = totalWeight;
         for (int i = n; i >= 1; i--) {
             if (bestValues[i][tempWeight] > bestValues[i - 1][tempWeight]) {
                 bestSolution.add(bags[i - 1]);
-                tempWeight = tempWeight - bags[i - 1].getWeight();
+                tempWeight = totalWeight - bags[i - 1].getWeight();
             }
         }
+        */
     }
 
     /**
@@ -157,7 +146,7 @@ public class KnapsackProblem {
      */
     public int getBestValue() {
 
-        bestValue = bestValues[n][totalWeight];
+        bestValue = bestValues[totalWeight];
         return bestValue;
     }
 
@@ -165,7 +154,7 @@ public class KnapsackProblem {
      * 获得前  n 个背包， 总承重为 totalWeight 的背包问题的最优解值矩阵
      * 调用条件： 必须先调用 solution 方法
      */
-    public int[][] getBestValues() {
+    public int[] getBestValues() {
 
         return bestValues;
     }
@@ -194,12 +183,11 @@ public class KnapsackProblem {
         System.out.println("最优解【选取的背包】: ");
         System.out.println(kp.getBestSolution());
         System.out.println("最优值矩阵：");
-        int[][] bestValues = kp.getBestValues();
+        int[] bestValues = kp.getBestValues();
         for (int i = 0; i < bestValues.length; i++) {
-            for (int j = 0; j < bestValues[i].length; j++) {
-                System.out.printf("%-5d", bestValues[i][j]);
-            }
-            System.out.println();
+            System.out.printf("%-5d", bestValues[i]);
         }
+        System.out.println();
     }
+
 }

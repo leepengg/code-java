@@ -1,7 +1,9 @@
 package com.leepengg;
 
+import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 /**
@@ -23,6 +25,17 @@ public class TestToArray {
 
         System.out.println(System.currentTimeMillis());
 
+        List<Long> longList = Lists.newArrayList();
+
+        longList.add(1l);
+        longList.add(2l);
+
+        Long[] la = longList.toArray(new Long[0]);
+
+        System.out.println(la.length);
+
+        long m = 1000l;
+        System.out.println(Math.round(m / 100.0 + 0.49));
 
     }
 
